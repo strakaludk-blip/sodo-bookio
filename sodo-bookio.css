@@ -375,6 +375,8 @@ input.np-button-inline,
   text-align: center;
 }
 .np-text-before:empty { display: none; }
+/* design je vložený přes „Text před“ v nastavení Bookia — samotný odkaz nezobrazovat */
+.np-text-before:has(> link:only-child) { display: none; }
 
 /* --------------------------------------------------------------------------
    7. Kroky 2–3 — pruh se stavem
