@@ -20,6 +20,7 @@
   --sodo-accent:    #c35f52;   /* terakota — tlačítko, výběr */
   --sodo-accent-dk: #a84c40;   /* terakota hover */
   --sodo-accent-lt: #f1e1d9;   /* terakota světlá — hover pozadí */
+  --sodo-header:    #e6d5b2;   /* písková — pruh s nadpisem */
   --sodo-on-accent: #fff7f3;
   --sodo-error:     #9b2c1f;
   --sodo-error-bg:  #f6e0da;
@@ -62,12 +63,12 @@ a.np-link:hover, .np-checkbox-wrapp a:hover, .np-options a:hover, .widget-link:h
    3. Hlavička
    -------------------------------------------------------------------------- */
 #header {
-  background: transparent !important;
+  background: var(--sodo-header) !important;
   color: var(--sodo-ink) !important;
   height: auto;
-  padding: 26px 22px 18px;
-  margin: 0 8px;
-  border-bottom: 1px solid var(--sodo-line);
+  padding: 24px 30px 20px;
+  margin: 0;
+  border-bottom: 0;
   display: flex;
   align-items: baseline;
   gap: 12px;
@@ -599,7 +600,7 @@ body:not(.portrait) .ui-datepicker {
 /* --------------------------------------------------------------------------
    11. Mobil (Bookio přidává třídu .portrait pod 560 px)
    -------------------------------------------------------------------------- */
-.portrait #header { padding: 20px 14px 14px; margin: 0 4px; }
+.portrait #header { padding: 18px 18px 16px; margin: 0; }
 .portrait .powered-by { margin: 8px 18px 16px; }
 .portrait #header h1 { font-size: 19px; }
 .portrait .np-wrapper { padding: 0 4px; }
