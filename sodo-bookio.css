@@ -129,7 +129,7 @@ a.np-link:hover, .np-checkbox-wrapp a:hover, .np-options a:hover, .widget-link:h
   font-weight: 500;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--sodo-muted);
+  color: #000000;   /* popisky polí — černé */
 }
 
 /* pole (datum + rozbalovací) */
