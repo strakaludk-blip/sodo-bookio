@@ -567,7 +567,7 @@ p.np-block.np-right,
 }
 .powered-by a { color: var(--sodo-muted) !important; text-decoration: none; opacity: .8; }
 .powered-by a:hover { opacity: 1; }
-.powered-by img { vertical-align: -1px; margin-left: 3px; }
+.powered-by img { vertical-align: -1px; margin-left: 3px; filter: brightness(0); opacity: .55; }
 
 /* --------------------------------------------------------------------------
    10. Kalendář na počítači — karta uprostřed se ztmavením
