@@ -1,0 +1,636 @@
+/* ==========================================================================
+   šodó — vlastní vzhled rezervačního widgetu Bookio
+   Verze 1.0 · listopad 2026
+   Vkládá se jako „Vlastní CSS“ (odkaz) v BookioPro → Online rezervační formulář.
+   Doporučené barvy v konfigurátoru: 1) a95f50  2) f4ede6  3) 2b2320
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&display=swap");
+
+/* --------------------------------------------------------------------------
+   1. Designové tokeny
+   -------------------------------------------------------------------------- */
+:root {
+  --sodo-bg:        #f4ede6;   /* krémová — pozadí */
+  --sodo-surface:   #fbf8f4;   /* světlá — pole, kalendář */
+  --sodo-ink:       #2b2320;   /* tmavě hnědá — text */
+  --sodo-muted:     #7a6a63;   /* tlumený text, popisky */
+  --sodo-line:      #d8c9bd;   /* linky, rámečky */
+  --sodo-line-soft: #e8ddd3;
+  --sodo-accent:    #a95f50;   /* terakota — tlačítko, výběr */
+  --sodo-accent-dk: #8c4c3f;   /* terakota hover */
+  --sodo-accent-lt: #f1e1d9;   /* terakota světlá — hover pozadí */
+  --sodo-on-accent: #fff7f3;
+  --sodo-error:     #9b2c1f;
+  --sodo-error-bg:  #f6e0da;
+
+  --sodo-font: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --sodo-r-sm: 8px;
+  --sodo-r-md: 12px;
+  --sodo-r-pill: 999px;
+  --sodo-shadow: 0 10px 30px rgba(43, 35, 32, .14), 0 2px 6px rgba(43, 35, 32, .06);
+}
+
+/* --------------------------------------------------------------------------
+   2. Základ
+   -------------------------------------------------------------------------- */
+html, body, .np-body-bg { background-color: var(--sodo-bg) !important; }
+body, .np-widget, .np-input, .ui-datepicker,
+.np-widget input, .np-widget textarea, .np-widget button {
+  font-family: var(--sodo-font) !important;
+  color: var(--sodo-ink);
+  -webkit-font-smoothing: antialiased;
+}
+.np-widget { font-size: 15px; line-height: 1.45; }
+.np-body p, .np-block, .np-link, p a.np-link, .np-options a, .np-checkbox-wrapp a { color: var(--sodo-ink); }
+a.np-link, .np-checkbox-wrapp a, .np-options a, .widget-link, p.np-right a {
+  color: var(--sodo-ink) !important;
+  text-decoration: underline;
+  text-decoration-color: var(--sodo-line);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color .15s, color .15s;
+}
+a.np-link:hover, .np-checkbox-wrapp a:hover, .np-options a:hover, .widget-link:hover, p.np-right a:hover {
+  color: var(--sodo-accent) !important;
+  text-decoration-color: currentColor;
+}
+.np-wrapper { padding: 0 8px; }
+.np-body { padding: 20px 22px; }
+
+/* --------------------------------------------------------------------------
+   3. Hlavička
+   -------------------------------------------------------------------------- */
+#header {
+  background: transparent !important;
+  color: var(--sodo-ink) !important;
+  height: auto;
+  padding: 26px 22px 18px;
+  margin: 0 8px;
+  border-bottom: 1px solid var(--sodo-line);
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+#header .np-logo { display: none; }
+#header h1,
+.portrait #header h1 {
+  display: block;
+  float: none;
+  margin: 0;
+  padding: 0;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--sodo-ink);
+}
+#header h1 strong { font-weight: 600; }
+#header .loading-cog { order: 2; margin-left: auto; color: var(--sodo-accent); font-size: 16px; }
+
+/* --------------------------------------------------------------------------
+   4. Krok 1 — výběr data, času, hostů
+   -------------------------------------------------------------------------- */
+#inputs.np-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  height: auto !important;
+  margin: 4px 0 0;
+  padding: 0 0 22px;
+}
+#inputs.np-fields > li,
+#inputs.np-fields > li.no-zone {
+  float: none;
+  flex: 1 1 120px;
+  width: auto;
+  min-width: 0;
+}
+#inputs.np-fields > li.np-date { flex: 1.4 1 150px; }
+#inputs.np-fields > li.ng-hide { display: none; }
+
+#inputs.np-fields > li label {
+  padding: 0 0 8px;
+  min-height: 0;
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--sodo-muted);
+}
+
+/* pole (datum + rozbalovací) */
+.np-filed,
+.selectWrapper,
+.np-select,
+.np-select:active,
+.np-select.active {
+  background-color: var(--sodo-surface) !important;
+  color: var(--sodo-ink) !important;
+}
+#inputs .np-filed,
+#inputs .selectWrapper {
+  box-sizing: border-box;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 50px;
+  padding: 0 16px;
+  border: 1px solid var(--sodo-line);
+  border-radius: var(--sodo-r-sm);
+  font-size: 16px;
+  font-weight: 500 !important;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+}
+#inputs .np-filed:hover,
+#inputs .selectWrapper:hover { border-color: var(--sodo-ink); }
+#inputs .np-filed:focus,
+#inputs .selectWrapper:focus-within {
+  outline: none;
+  border-color: var(--sodo-ink);
+  box-shadow: 0 0 0 3px rgba(169, 95, 80, .18);
+}
+/* ikonka kalendáře v poli data */
+#inputs .np-filed.np-date {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%232b2320' stroke-width='1.4' stroke-linecap='round' viewBox='0 0 24 24'%3E%3Crect x='3.5' y='5' width='17' height='15.5' rx='2'/%3E%3Cpath d='M3.5 10h17M8 3v4M16 3v4'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 14px center !important;
+}
+
+#inputs .selectWrapper { position: relative; display: flex; align-items: center; }
+#inputs .np-select {
+  position: static;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  background: transparent !important;
+}
+#inputs .ui-select-match,
+#inputs .ui-select-match span { font-weight: 500; color: var(--sodo-ink); }
+/* šipka rozbalovacího pole — jedna jemná „V“ místo dvou trojúhelníků */
+#inputs .np-select:before { display: none !important; }
+#inputs .np-select:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 17px;
+  width: 7px;
+  height: 7px;
+  margin-top: -6px;
+  border: solid var(--sodo-ink) !important;
+  border-width: 0 1.5px 1.5px 0 !important;
+  transform: rotate(45deg);
+  background: none;
+}
+
+/* rozbalený seznam */
+.selectOptions,
+.ui-select-choices-content.selectOptions {
+  background-color: var(--sodo-surface) !important;
+  border: 1px solid var(--sodo-line);
+  border-radius: var(--sodo-r-sm);
+  box-shadow: var(--sodo-shadow);
+  margin-top: 6px;
+  padding: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 50;
+}
+.selectOptions li,
+.selectOptions .ui-select-choices-row {
+  color: var(--sodo-ink) !important;
+  border-bottom: 0 !important;
+  border-radius: 6px;
+  padding: 9px 12px;
+  font-size: 15px;
+  font-weight: 400;
+  cursor: pointer;
+}
+.selectOptions li:hover,
+.selectOptions li:active,
+.selectOptions .ui-select-choices-row:hover,
+.selectOptions .ui-select-choices-row.active {
+  color: var(--sodo-ink) !important;
+  background: var(--sodo-accent-lt) !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. Kalendář
+   -------------------------------------------------------------------------- */
+.ui-datepicker {
+  box-sizing: border-box;
+  width: 300px;
+  padding: 14px 14px 10px;
+  background-color: var(--sodo-surface) !important;
+  border: 1px solid var(--sodo-line);
+  border-radius: var(--sodo-r-md) !important;
+  box-shadow: var(--sodo-shadow) !important;
+  z-index: 60 !important;
+}
+.ui-datepicker .ui-datepicker-header,
+.ui-datepicker-header,
+.ui-datepicker-title {
+  color: var(--sodo-ink) !important;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 600;
+}
+.ui-datepicker .ui-datepicker-title { line-height: 32px; text-transform: lowercase; }
+.ui-datepicker .ui-datepicker-title:first-letter { text-transform: uppercase; }
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-next {
+  top: 3px !important;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: background .15s;
+}
+.ui-datepicker .ui-datepicker-prev:hover,
+.ui-datepicker .ui-datepicker-next:hover { background: var(--sodo-accent-lt); }
+.ui-datepicker-prev span,
+.ui-datepicker-next span,
+.ui-datepicker .ui-datepicker-prev span,
+.ui-datepicker .ui-datepicker-next span {
+  color: var(--sodo-ink) !important;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1;
+  top: 50% !important;
+  margin-top: -14px;
+}
+.ui-datepicker table { font-size: 14px; margin: 6px 0 2px; }
+.ui-datepicker th {
+  color: var(--sodo-muted) !important;
+  font-size: 11.5px;
+  font-weight: 500 !important;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 6px 0;
+}
+.ui-datepicker tbody td { padding: 2px; font-size: 14px; font-weight: 500 !important; }
+.ui-datepicker tbody td a,
+.ui-datepicker tbody td span {
+  display: block;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  margin: 0 auto;
+  padding: 0 !important;
+  text-align: center !important;
+  border-radius: 50%;
+  border: 0 !important;
+  border-bottom: 0 !important;
+}
+.ui-datepicker tbody td a {
+  color: var(--sodo-ink) !important;
+  background: transparent;
+  transition: background .12s, color .12s;
+}
+.ui-datepicker tbody td a:hover,
+.ui-datepicker-calendar .ui-state-hover {
+  background: var(--sodo-accent-lt) !important;
+  border-bottom: 0 !important;
+}
+/* nedostupné dny */
+.ui-datepicker-unselectable span,
+.ui-datepicker tbody td.ui-state-disabled span {
+  color: #bfb1a7 !important;
+  font-weight: 400;
+  text-decoration: line-through;
+  text-decoration-color: rgba(191, 177, 167, .6);
+}
+.ui-datepicker-other-month span { visibility: hidden; }
+/* dnešek */
+.ui-datepicker-today a,
+.ui-datepicker-today span {
+  background: transparent !important;
+  box-shadow: inset 0 0 0 1px var(--sodo-ink);
+}
+/* vybraný den */
+.ui-datepicker-calendar .ui-state-active,
+.ui-datepicker tbody td a.ui-state-active,
+.ui-datepicker-today .ui-state-active {
+  background: var(--sodo-accent) !important;
+  color: var(--sodo-on-accent) !important;
+  box-shadow: none;
+}
+
+/* --------------------------------------------------------------------------
+   6. Tlačítko
+   -------------------------------------------------------------------------- */
+.np-button,
+input.np-button,
+.np-button-inline,
+input.np-button-inline,
+.np-guarantee button.np-button,
+.np-payment .np-button {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  display: block;
+  width: auto;
+  min-width: 240px;
+  height: 52px;
+  margin: 4px auto 0;
+  padding: 0 32px;
+  background-color: var(--sodo-accent) !important;
+  color: var(--sodo-on-accent) !important;
+  border: 0 !important;
+  border-radius: var(--sodo-r-pill);
+  font-family: var(--sodo-font);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: .01em;
+  cursor: pointer;
+  transition: background-color .15s, transform .1s;
+}
+.np-button:hover,
+.np-button-inline:hover { background-color: var(--sodo-accent-dk) !important; }
+.np-button:active { transform: translateY(1px); }
+.np-button:focus-visible { outline: 2px solid var(--sodo-ink); outline-offset: 3px; }
+.np-button[disabled] { opacity: .55; cursor: default; }
+
+/* text pod tlačítkem (textBefore z administrace) */
+.np-text-before {
+  margin-top: 22px;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--sodo-line-soft) !important;
+  color: var(--sodo-muted);
+  font-size: 13.5px;
+  text-align: center;
+}
+.np-text-before:empty { display: none; }
+
+/* --------------------------------------------------------------------------
+   7. Kroky 2–3 — pruh se stavem
+   -------------------------------------------------------------------------- */
+.np-label-box,
+h2.np-label-box {
+  margin: 16px 8px 0;
+  padding: 14px 24px;
+  background-color: var(--sodo-accent) !important;
+  color: var(--sodo-on-accent) !important;
+  border-radius: var(--sodo-r-md);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+.np-label-box .np-triangle {
+  border-width: 9px 11px 0 11px !important;
+  border-color: var(--sodo-accent) transparent transparent transparent !important;
+  bottom: -8px;
+  right: auto;
+  left: 50%;
+  margin-left: -11px;
+}
+.np-label-box.no-capacity {
+  background-color: var(--sodo-ink) !important;
+}
+.np-label-box.no-capacity .np-triangle {
+  border-color: var(--sodo-ink) transparent transparent transparent !important;
+}
+
+.np-block { line-height: 1.5; }
+.np-block.bold { font-weight: 600; margin-top: 8px; }
+.np-hr { background: var(--sodo-line-soft); }
+
+/* alternativní časy */
+.np-alternatives { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 18px 0; }
+.np-alternatives li,
+.portrait .np-alternatives li {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 84px;
+  margin: 0;
+  padding: 12px 20px;
+  border: 1px solid var(--sodo-ink) !important;
+  border-radius: var(--sodo-r-pill);
+  background: var(--sodo-surface);
+  color: var(--sodo-ink) !important;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background .15s, color .15s;
+}
+.np-alternatives li:hover {
+  background-color: var(--sodo-ink) !important;
+  color: var(--sodo-on-accent) !important;
+}
+.np-disabled, .np-disabled .np-input,
+.np-alternatives .np-disabled, .np-alternatives .np-disabled:hover {
+  border-color: var(--sodo-line) !important;
+  color: #bfb1a7 !important;
+  background: transparent !important;
+}
+
+/* --------------------------------------------------------------------------
+   8. Krok 3 — kontaktní údaje
+   -------------------------------------------------------------------------- */
+.np-success {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.35;
+  margin: 10px auto 22px;
+  color: var(--sodo-ink);
+}
+.np-body .np-input-wrapp {
+  box-sizing: border-box;
+  display: block;
+  margin-bottom: 12px;
+  background: var(--sodo-surface);
+  border: 1px solid var(--sodo-line) !important;
+  border-radius: var(--sodo-r-sm);
+  transition: border-color .15s, box-shadow .15s;
+}
+.np-body .np-input-wrapp:focus-within {
+  border-color: var(--sodo-ink) !important;
+  box-shadow: 0 0 0 3px rgba(169, 95, 80, .18);
+}
+.np-body form .np-input,
+.np-input {
+  box-sizing: border-box;
+  background-color: transparent !important;
+  color: var(--sodo-ink) !important;
+  border: 0;
+  outline: none;
+  padding: 14px 16px;
+  font-size: 16px;
+  font-weight: 400;
+}
+.np-body form .np-input.np-textarea { height: 84px; resize: vertical; line-height: 1.4; }
+.np-input::placeholder { color: var(--sodo-muted); opacity: 1; font-weight: 400; }
+.np-input::-webkit-input-placeholder { color: var(--sodo-muted); font-weight: 400; }
+/* telefonní předvolba (vlajka) */
+.np-input-wrapp .intl-tel-input { display: block; width: 100%; }
+.np-input-wrapp .intl-tel-input .flag-container { left: 0; padding: 0; }
+.np-input-wrapp .intl-tel-input .selected-flag { padding: 0 0 0 16px; width: 58px; border-radius: var(--sodo-r-sm) 0 0 var(--sodo-r-sm); }
+.np-input-wrapp .intl-tel-input .selected-flag:hover,
+.np-input-wrapp .intl-tel-input .selected-flag:focus { background: var(--sodo-accent-lt); }
+.np-body form .intl-tel-input input.np-input,
+.np-body form .intl-tel-input input[type="text"],
+.np-body form .intl-tel-input input[type="tel"] { padding-left: 66px !important; }
+.np-input-wrapp .intl-tel-input .country-list {
+  background: var(--sodo-surface);
+  border: 1px solid var(--sodo-line);
+  border-radius: var(--sodo-r-sm);
+  box-shadow: var(--sodo-shadow);
+  color: var(--sodo-ink);
+  font-size: 14px;
+}
+.np-input-wrapp .intl-tel-input .country-list .country.highlight { background: var(--sodo-accent-lt); }
+
+.widget-link { display: inline-block; margin: 4px 0 12px; font-size: 14px; }
+
+/* souhlasy */
+.np-checkbox-wrapp { margin: 4px 0 10px; }
+.np-checkbox-wrapp p, .np-vop { font-size: 14px; line-height: 1.5; text-align: left; }
+.np-checkbox-wrapp p.np-vop { display: block; position: relative; padding-left: 30px; margin: 0; }
+.np-checkbox-wrapp input[type="checkbox"] {
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--sodo-accent);
+  cursor: pointer;
+}
+.np-checkbox-wrapp label { cursor: pointer; }
+.np-checkbox-wrapp #agree-all + label { font-weight: 600; }
+
+input.np-button.np-left { margin: 22px auto 0; float: none; }
+p.np-block.np-right,
+.portrait p.np-block.np-right {
+  float: none;
+  clear: both;
+  margin: 18px 0 4px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--sodo-muted);
+  line-height: 1.7;
+}
+
+/* chybové hlášky */
+.np-errors {
+  color: var(--sodo-error) !important;
+  background: var(--sodo-error-bg);
+  border-radius: var(--sodo-r-sm);
+  padding: 12px 16px;
+  margin: 14px 0 !important;
+  font-size: 14px;
+  font-weight: 500 !important;
+  text-align: center;
+}
+.np-errors.ng-hide { display: none !important; }
+.np-errors:empty { display: none; }
+
+/* --------------------------------------------------------------------------
+   9. Krok 4 — potvrzení
+   -------------------------------------------------------------------------- */
+#step4 .np-success { font-size: 22px; margin-top: 18px; }
+#map_canvas { border-radius: var(--sodo-r-md); overflow: hidden; filter: saturate(.6) sepia(.15); }
+.np-gmap-ico { background-color: var(--sodo-accent) !important; }
+.np-options { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 18px 0 6px; }
+.np-options li,
+.portrait .np-options li {
+  display: block;
+  padding: 0;
+  text-indent: 0;
+  font-size: 14px;
+}
+.np-options li:before,
+.np-options li:not(:first-child):before { content: none !important; }
+.np-options li a {
+  display: inline-block;
+  padding: 9px 16px;
+  border: 1px solid var(--sodo-line);
+  border-radius: var(--sodo-r-pill);
+  text-decoration: none !important;
+  background: var(--sodo-surface);
+}
+.np-options li a:hover { border-color: var(--sodo-ink); }
+
+/* patička — název podniku je už v hlavičce, „powered by“ zůstává */
+.restaurant-name { display: none; }
+.powered-by {
+  margin: 8px 30px 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--sodo-line-soft);
+  text-align: center;
+  font-size: 12px;
+}
+.powered-by a { color: var(--sodo-muted) !important; text-decoration: none; opacity: .8; }
+.powered-by a:hover { opacity: 1; }
+.powered-by img { vertical-align: -1px; margin-left: 3px; }
+
+/* --------------------------------------------------------------------------
+   10. Kalendář na počítači — karta uprostřed se ztmavením
+   Iframe je jen tak vysoký jako formulář, takže pod polem by se kalendář
+   uřízl. Uprostřed se vejde vždy.
+   -------------------------------------------------------------------------- */
+body:not(.portrait) .np-widget { min-height: 420px; }
+body:not(.portrait) .ui-datepicker {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 100vmax rgba(43, 35, 32, .32), var(--sodo-shadow) !important;
+}
+
+/* --------------------------------------------------------------------------
+   11. Mobil (Bookio přidává třídu .portrait pod 560 px)
+   -------------------------------------------------------------------------- */
+.portrait #header { padding: 20px 14px 14px; margin: 0 4px; }
+.portrait .powered-by { margin: 8px 18px 16px; }
+.portrait #header h1 { font-size: 19px; }
+.portrait .np-wrapper { padding: 0 4px; }
+.portrait .np-body { padding: 18px 14px; }
+.portrait #inputs.np-fields { gap: 14px 10px; }
+.portrait #inputs.np-fields > li.np-date { flex: 1 1 100%; }
+.portrait #inputs.np-fields > li { flex: 1 1 calc(50% - 5px); }
+.portrait #inputs .np-filed,
+.portrait #inputs .selectWrapper { padding: 0 14px; }
+.portrait .np-fields label { margin: 0; }
+.portrait .np-button,
+.portrait input.np-button { width: 100%; min-width: 0; }
+.portrait .np-label-box { margin: 12px 4px 0; padding: 12px 18px; font-size: 15px; }
+.portrait .np-success { font-size: 17px; }
+.portrait .ui-datepicker { width: calc(100vw - 32px) !important; max-width: 340px; }
+.portrait .ui-datepicker tbody td a,
+.portrait .ui-datepicker tbody td span { width: 36px; height: 36px; line-height: 36px; }
+
+/* --------------------------------------------------------------------------
+   12. Cookie lišta Bookio — jen barvy, funkce beze změny
+   -------------------------------------------------------------------------- */
+.cky-consent-container .cky-consent-bar,
+.cky-modal .cky-preference-center {
+  background: var(--sodo-surface) !important;
+  border-color: var(--sodo-line) !important;
+  font-family: var(--sodo-font) !important;
+}
+.cky-consent-container .cky-title,
+.cky-consent-container .cky-notice-des,
+.cky-consent-container .cky-notice-des p { color: var(--sodo-ink) !important; font-family: var(--sodo-font) !important; }
+.cky-btn {
+  border-radius: var(--sodo-r-pill) !important;
+  font-family: var(--sodo-font) !important;
+  font-weight: 500 !important;
+}
+.cky-btn.cky-btn-accept {
+  background: var(--sodo-accent) !important;
+  border-color: var(--sodo-accent) !important;
+  color: var(--sodo-on-accent) !important;
+}
+.cky-btn.cky-btn-reject,
+.cky-btn.cky-btn-customize,
+.cky-btn.cky-btn-preferences {
+  background: transparent !important;
+  border-color: var(--sodo-ink) !important;
+  color: var(--sodo-ink) !important;
+}
