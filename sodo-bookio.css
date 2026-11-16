@@ -2,7 +2,7 @@
    šodó — vlastní vzhled rezervačního widgetu Bookio
    Verze 1.0 · listopad 2026
    Vkládá se jako „Vlastní CSS“ (odkaz) v BookioPro → Online rezervační formulář.
-   Doporučené barvy v konfigurátoru: 1) a95f50  2) f4ede6  3) 2b2320
+   Doporučené barvy v konfigurátoru: 1) c35f52  2) f4ede6  3) 2b2320
    ========================================================================== */
 
 @import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&display=swap");
@@ -17,8 +17,8 @@
   --sodo-muted:     #7a6a63;   /* tlumený text, popisky */
   --sodo-line:      #d8c9bd;   /* linky, rámečky */
   --sodo-line-soft: #e8ddd3;
-  --sodo-accent:    #a95f50;   /* terakota — tlačítko, výběr */
-  --sodo-accent-dk: #8c4c3f;   /* terakota hover */
+  --sodo-accent:    #c35f52;   /* terakota — tlačítko, výběr */
+  --sodo-accent-dk: #a84c40;   /* terakota hover */
   --sodo-accent-lt: #f1e1d9;   /* terakota světlá — hover pozadí */
   --sodo-on-accent: #fff7f3;
   --sodo-error:     #9b2c1f;
@@ -161,7 +161,7 @@ a.np-link:hover, .np-checkbox-wrapp a:hover, .np-options a:hover, .widget-link:h
 #inputs .selectWrapper:focus-within {
   outline: none;
   border-color: var(--sodo-ink);
-  box-shadow: 0 0 0 3px rgba(169, 95, 80, .18);
+  box-shadow: 0 0 0 3px rgba(195, 95, 82, .18);
 }
 /* ikonka kalendáře v poli data */
 #inputs .np-filed.np-date {
@@ -463,7 +463,7 @@ h2.np-label-box {
 }
 .np-body .np-input-wrapp:focus-within {
   border-color: var(--sodo-ink) !important;
-  box-shadow: 0 0 0 3px rgba(169, 95, 80, .18);
+  box-shadow: 0 0 0 3px rgba(195, 95, 82, .18);
 }
 .np-body form .np-input,
 .np-input {
