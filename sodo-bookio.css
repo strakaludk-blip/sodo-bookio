@@ -2,7 +2,7 @@
    šodó — vlastní vzhled rezervačního widgetu Bookio
    Verze 1.0 · listopad 2026
    Vkládá se jako „Vlastní CSS“ (odkaz) v BookioPro → Online rezervační formulář.
-   Doporučené barvy v konfigurátoru: 1) c35f52  2) f4ede6  3) 2b2320
+   Doporučené barvy v konfigurátoru: 1) c35f52  2) ffffff  3) 2b2320
    ========================================================================== */
 
 @import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&display=swap");
@@ -11,7 +11,7 @@
    1. Designové tokeny
    -------------------------------------------------------------------------- */
 :root {
-  --sodo-bg:        #f4ede6;   /* krémová — pozadí */
+  --sodo-bg:        #ffffff;   /* bílá — pozadí */
   --sodo-surface:   #fbf8f4;   /* světlá — pole, kalendář */
   --sodo-ink:       #2b2320;   /* tmavě hnědá — text */
   --sodo-muted:     #7a6a63;   /* tlumený text, popisky */
